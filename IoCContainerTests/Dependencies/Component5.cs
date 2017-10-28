@@ -5,14 +5,14 @@ using System.Text;
 
 namespace IoCContainerTests.Dependencies
 {
-    class Dependency_1
+    class Component5 : Interface5, IDependency
     {
-        private Interface_2 dep2;
-        private Interface_3 dep3;
-        private Interface_4 dep4;
-        private Interface_5 dep5;
+        private Interface1 dep2;
+        private Interface2 dep3;
+        private Interface3 dep4;
+        private Interface4 dep5;
 
-        public Dependency_1(Interface_2 dep2, Interface_3 dep3, Interface_4 dep4, Interface_5 dep5)
+        public Component5(Interface1 dep2, Interface2 dep3, Interface3 dep4, Interface4 dep5)
         {
             this.dep2 = dep2;
             this.dep3 = dep3;

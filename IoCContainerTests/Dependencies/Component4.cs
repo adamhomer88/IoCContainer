@@ -5,7 +5,11 @@ using System.Text;
 
 namespace IoCContainerTests.Dependencies
 {
-    class Dependency_5 : Interface_5
+    class Component4 : Interface4, IDependency
     {
+        public bool IsValid()
+        {
+            return true;
+        }
     }
 }
