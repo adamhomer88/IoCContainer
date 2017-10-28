@@ -5,10 +5,10 @@ namespace IoCContainerTests.Dependencies
 {
     public class Component5 : Abstract5, Interface5
     {
-        private Interface1 dep2;
-        private Interface2 dep3;
-        private Interface3 dep4;
-        private Interface4 dep5;
+        public Interface1 dep2 { get; set; }
+        public Interface2 dep3 { get; set; }
+        public Interface3 dep4 { get; set; }
+        public Interface4 dep5 { get; set; }
 
         public Component5(Interface1 dep2, Interface2 dep3, Interface3 dep4, Interface4 dep5)
         {
