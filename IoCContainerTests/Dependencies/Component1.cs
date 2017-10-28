@@ -1,13 +1,11 @@
-﻿using IoCContainerTests.Dependencies.Contracts;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using IoCContainerTests.Dependencies.Abstract;
+using IoCContainerTests.Dependencies.Contracts;
 
 namespace IoCContainerTests.Dependencies
 {
-    class Component1 : Interface1, IDependency
+    class Component1 : Abstract1, Interface1
     {
-        public bool IsValid()
+        public override bool IsValid()
         {
             return true;
         }

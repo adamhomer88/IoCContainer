@@ -23,14 +23,14 @@ namespace IoCContainer
             Bindings[type1] = new Binding(lifeCycle, () => ResolveByType(typeof(T2))); 
         }
 
-        public bool RemoveBind<T1>()
+        public bool Unbind<T1>()
         {
             return Bindings.Remove(typeof(T1));
         }
 
-        public void ReBind<T1, T2>(LifeCycle lifeCycle = LifeCycle.Transient) where T2:T1
+        public void Rebind<T1, T2>(LifeCycle lifeCycle = LifeCycle.Transient) where T2:T1
         {
-            RemoveBind<T1>();
+            Unbind<T1>();
             Bind<T1, T2>();
         }
 

@@ -1,11 +1,9 @@
-﻿using IoCContainerTests.Dependencies.Contracts;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using IoCContainerTests.Dependencies.Abstract;
+using IoCContainerTests.Dependencies.Contracts;
 
 namespace IoCContainerTests.Dependencies
 {
-    class Component5 : Interface5, IDependency
+    public class Component5 : Abstract5, Interface5
     {
         private Interface1 dep2;
         private Interface2 dep3;
@@ -20,7 +18,7 @@ namespace IoCContainerTests.Dependencies
             this.dep5 = dep5;
         }
 
-        public bool IsValid()
+        public override bool IsValid()
         {
             return dep2 != null && dep3 != null && dep4 != null && dep5 != null;
         }

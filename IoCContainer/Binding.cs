@@ -9,7 +9,7 @@ namespace IoCContainer
         private LifeCycle _lifeCycle;
         private Func<object> _resolver;
         private object _singleton;
-        private Dictionary<int, object> _threadStatic;
+        private Dictionary<int, object> _threadStatic = new Dictionary<int, object>();
 
         public Binding(LifeCycle lifeCycle, Func<object> resolver)
         {

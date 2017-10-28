@@ -4,7 +4,7 @@ using System.Text;
 
 namespace IoCContainerTests.Dependencies.Contracts
 {
-    interface Interface5 : IDependency
+    public interface Interface5 : IDependency
     {
 
     }

@@ -4,7 +4,7 @@ using System.Text;
 
 namespace IoCContainerTests.Dependencies.Contracts
 {
-    interface IDependency
+    public interface IDependency
     {
         bool IsValid();
     }
