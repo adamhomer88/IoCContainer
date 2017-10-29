@@ -11,7 +11,15 @@ namespace IoCContainer
     {
         private readonly Dictionary<Type,Binding> Bindings = new Dictionary<Type, Binding>();
 
-        public void Bind<T1, T2>(LifeCycle lifeCycle = LifeCycle.Transient) where T2:T1
+        /// <summary>
+        /// Binds an abstract to a concrete implementation.
+        /// Throws DuplicateBindingKeyException exception if an existing abstract is already bound to a concrete implementation.
+        /// Throws BindToAbstractException if attempting to bind an abstract to an abstract.
+        /// </summary>
+        /// <typeparam name="T1">Abstract</typeparam>
+        /// <typeparam name="T2">Concrete implementation of T1</typeparam>
+        /// <param name="lifeCycle"></param>
+        public void Bind<T1, T2>(LifeCycles lifeCycle = LifeCycles.Transient) where T2:T1
         {
             var type1 = typeof(T1);
             var type2 = typeof(T2);
@@ -28,7 +36,7 @@ namespace IoCContainer
             return Bindings.Remove(typeof(T1));
         }
 
-        public void Rebind<T1, T2>(LifeCycle lifeCycle = LifeCycle.Transient) where T2:T1
+        public void Rebind<T1, T2>(LifeCycles lifeCycle = LifeCycles.Transient) where T2:T1
         {
             Unbind<T1>();
             Bind<T1, T2>();
@@ -36,15 +44,29 @@ namespace IoCContainer
 
         private object ResolveByType(Type type)
         {
-            var constructor = type.GetConstructors().FirstOrDefault();
-            if(constructor == null)
+            if (type.IsAbstract)
+                return null;
+            return InvokeValideConstructor(type);
+        }
+
+        private object InvokeValideConstructor(Type type)
+        {
+            var orderedConstructors = type.GetConstructors().OrderByDescending(x => x.GetParameters().Length);
+            ConstructorInfo validConstructor = null;
+            object[] args = null;
+            foreach(var constructor in orderedConstructors)
             {
-                if (type.IsAbstract)
-                    throw new ResolveToAbstractException($"Missing binding in dependency chain for {type}.");
-                return FormatterServices.GetUninitializedObject(type);
+                args = constructor.GetParameters().Select(x => Resolve(x.ParameterType)).ToArray();
+                if (args.Any(x => x == null))
+                    continue;
+                validConstructor = constructor;
+                break;
             }
-            var args = constructor.GetParameters().Select(x => Resolve(x.ParameterType)).ToArray();
-            return constructor.Invoke(args);
+            if (validConstructor == null)
+            {
+                throw new MissingDependencyException($"Missing valid binding configuration for {type}.");
+            }
+            return validConstructor.Invoke(args);
         }
 
         private object Resolve(Type type)

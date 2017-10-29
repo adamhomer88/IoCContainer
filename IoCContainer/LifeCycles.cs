@@ -4,7 +4,7 @@ using System.Text;
 
 namespace IoCContainer
 {
-    public enum LifeCycle
+    public enum LifeCycles
     {
         Transient, Singleton, Thread
     }

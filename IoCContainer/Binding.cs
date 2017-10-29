@@ -6,29 +6,29 @@ namespace IoCContainer
 {
     public class Binding
     {
-        private LifeCycle _lifeCycle;
+        private LifeCycles _lifeCycle;
         private Func<object> _resolver;
         private object _singleton;
         private Dictionary<int, object> _threadStatic = new Dictionary<int, object>();
 
-        public Binding(LifeCycle lifeCycle, Func<object> resolver)
+        internal Binding(LifeCycles lifeCycle, Func<object> resolver)
         {
             _lifeCycle = lifeCycle;
             _resolver = resolver;
         }
 
-        public object ResolveBinding()
+        internal object ResolveBinding()
         {
             object _object;
             switch (_lifeCycle)
             {
-                case LifeCycle.Transient:
+                case LifeCycles.Transient:
                     _object = _resolver();
                     break;
-                case LifeCycle.Singleton:
+                case LifeCycles.Singleton:
                     _object = ResolveSingleton();
                     break;
-                case LifeCycle.Thread:
+                case LifeCycles.Thread:
                     _object = ResolveThreadStatic();
                     break;
                 default:

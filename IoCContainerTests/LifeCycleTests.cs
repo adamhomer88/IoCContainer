@@ -31,7 +31,7 @@ namespace IoCContainerTests
             container.Bind<Interface2, Component2>();
             container.Bind<Interface3, Component3>();
             container.Bind<Interface4, Component4>();
-            container.Bind<Interface5, Component5>(LifeCycle.Singleton);
+            container.Bind<Interface5, Component5>(LifeCycles.Singleton);
 
             var comp1 = container.Resolve<Component6>();
             var comp2 = container.Resolve<Component6>();
@@ -52,7 +52,7 @@ namespace IoCContainerTests
             container.Bind<Interface2, Component2>();
             container.Bind<Interface3, Component3>();
             container.Bind<Interface4, Component4>();
-            container.Bind<Interface5, Component5>(LifeCycle.Thread);
+            container.Bind<Interface5, Component5>(LifeCycles.Thread);
 
             var thread1 = new Thread(() =>
             {
@@ -120,11 +120,11 @@ namespace IoCContainerTests
             Component6 comp1 = null;
             Component6 comp2 = null;
             var container = new Container();
-            container.Bind<Interface1, Component1>(LifeCycle.Thread);
-            container.Bind<Interface2, Component2>(LifeCycle.Thread);
-            container.Bind<Interface3, Component3>(LifeCycle.Thread);
-            container.Bind<Interface4, Component4>(LifeCycle.Thread);
-            container.Bind<Interface5, Component5>(LifeCycle.Thread);
+            container.Bind<Interface1, Component1>();
+            container.Bind<Interface2, Component2>();
+            container.Bind<Interface3, Component3>();
+            container.Bind<Interface4, Component4>();
+            container.Bind<Interface5, Component5>(LifeCycles.Thread);
 
             var thread1 = new Thread(() => comp1 = container.Resolve<Component6>());
             var thread2 = new Thread(() => comp2 = container.Resolve<Component6>());
@@ -147,10 +147,10 @@ namespace IoCContainerTests
             Component6 comp1 = null;
             Component6 comp2 = null;
             var container = new Container();
-            container.Bind<Interface1, Component1>(LifeCycle.Singleton);
-            container.Bind<Interface2, Component2>(LifeCycle.Singleton);
+            container.Bind<Interface1, Component1>(LifeCycles.Singleton);
+            container.Bind<Interface2, Component2>(LifeCycles.Singleton);
             container.Bind<Interface3, Component3>();
-            container.Bind<Interface4, Component4>(LifeCycle.Thread);
+            container.Bind<Interface4, Component4>(LifeCycles.Thread);
             container.Bind<Interface5, Component5>();
 
             var thread1 = new Thread(() => comp1 = container.Resolve<Component6>());
@@ -182,10 +182,10 @@ namespace IoCContainerTests
             Component6 comp4 = null;
 
             var container = new Container();
-            container.Bind<Interface1, Component1>(LifeCycle.Singleton);
-            container.Bind<Interface2, Component2>(LifeCycle.Singleton);
+            container.Bind<Interface1, Component1>(LifeCycles.Singleton);
+            container.Bind<Interface2, Component2>(LifeCycles.Singleton);
             container.Bind<Interface3, Component3>();
-            container.Bind<Interface4, Component4>(LifeCycle.Thread);
+            container.Bind<Interface4, Component4>(LifeCycles.Thread);
             container.Bind<Interface5, Component5>();
 
             var thread1 = new Thread(() =>
