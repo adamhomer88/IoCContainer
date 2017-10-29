@@ -75,7 +75,7 @@ namespace IoCContainerTests
         {
             var container = new Container();
             container.Bind<Interface1, Component1>();
-            Assert.Throws<DuplicateBindingKeyException>(()=>container.Bind<Interface1, Component2>());
+            Assert.Throws<DuplicateBindingException>(()=>container.Bind<Interface1, Component2>());
         }
 
         /// <summary>
@@ -191,15 +191,18 @@ namespace IoCContainerTests
         /// Resolve will return an object using the first valid constructor with the most arguments.
         /// </summary>
         [Fact]
-        public void Multiple_Constructors_Resolves_Valid_Object()
+        public void Multiple_Constructors_With_Equal_Parameters_Length_Resolves_Valid_Object()
         {
             var container = new Container();
             container.Bind<Interface1, Component1>();
             container.Bind<Interface2, Component2>();
             container.Bind<Interface3, Component3>();
+
             var comp1 = container.Resolve<Component10>();
 
-            container.Bind<Interface5, Component5>();
+            container.Bind<Interface4, Component4>();
+            container.Unbind<Interface1>();
+
             var comp2 = container.Resolve<Component10>();
 
             // comp1 resolved before interface 5 had a binding.
@@ -209,5 +212,11 @@ namespace IoCContainerTests
             Assert.True(comp2.IsValid() && comp2._dep4 != null);
         }
 
+        [Fact]
+        public void Resolve_Abstract_Throws_Exception()
+        {
+            var container = new Container();
+            Assert.Throws<ResolveToAbstractException>(() => container.Resolve<Interface5>());
+        }
     }
 }
