@@ -8,6 +8,9 @@ namespace IoCContainerTests
 {
     public class LifeCycleTests
     {
+        /// <summary>
+        /// Default life cycle is Transient. Each object resolved should be separate and distinct.
+        /// </summary>
         [Fact]
         public void Transient_Lifecycle_Objects_Are_Distinct()
         {
@@ -23,6 +26,9 @@ namespace IoCContainerTests
             Assert.NotEqual(comp1, comp2);
         }
 
+        /// <summary>
+        /// Interface 5 is given a singleton lifecycle. Resolving interface 5 will always return the same object.
+        /// </summary>
         [Fact]
         public void Singleton_Lifecycle_Objects_Are_Not_Distinct()
         {
@@ -39,6 +45,10 @@ namespace IoCContainerTests
             Assert.Equal(comp1.dep, comp2.dep);
         }
 
+        /// <summary>
+        /// Test will create two separate threads, resolve the same components, then join the threads and compare.
+        /// In thread static bindings, the components should be distinct between threads.
+        /// </summary>
         [Fact]
         public void Thread_Static_Lifecycle_Objects_Are_Distinct()
         {
@@ -91,31 +101,12 @@ namespace IoCContainerTests
             Assert.Equal(((Component5)comp2.dep).dep5, ((Component5)comp2.dep).dep5);
         }
 
+        /// <summary>
+        /// Test will create two separate threads, resolve the same components, then join the threads and compare.
+        /// Interface 5 will be not be equal between separate threads.
+        /// </summary>
         [Fact]
         public void Thread_Static_Lifecycle_Objects_Are_Not_Distinct_In_Separate_Threads()
-        {
-            Component6 comp1 = null;
-            Component6 comp2 = null;
-            var container = new Container();
-            container.Bind<Interface1, Component1>();
-            container.Bind<Interface2, Component2>();
-            container.Bind<Interface3, Component3>();
-            container.Bind<Interface4, Component4>();
-            container.Bind<Interface5, Component5>();
-
-            var thread1 = new Thread(() => comp1 = container.Resolve<Component6>());
-            var thread2 = new Thread(() => comp2 = container.Resolve<Component6>());
-
-            thread1.Start();
-            thread2.Start();
-            thread1.Join();
-            thread2.Join();
-
-            Assert.NotEqual(comp1.dep, comp2.dep);
-        }
-
-        [Fact]
-        public void Deep_Thread_Static_Lifecycle_Objects_Are_Not_Distinct_In_Separate_Threads()
         {
             Component6 comp1 = null;
             Component6 comp2 = null;
@@ -141,8 +132,12 @@ namespace IoCContainerTests
             Assert.NotEqual(((Component5)comp1.dep).dep5, ((Component5)comp2.dep).dep5);
         }
 
+        /// <summary>
+        /// Test both singleton and thread static lifecycles in separate threads.
+        /// Only singleton bindings are static between threads.
+        /// </summary>
         [Fact]
-        public void Deep_Thread_Static_Lifecycle_Objects_Combination_Of_Lifecycles_Separate_Threads()
+        public void Test_Combination_Lifecycles_In_Separate_Threads()
         {
             Component6 comp1 = null;
             Component6 comp2 = null;
@@ -173,8 +168,13 @@ namespace IoCContainerTests
             Assert.NotEqual(((Component5)comp1.dep).dep5, ((Component5)comp2.dep).dep5);
         }
 
+        /// <summary>
+        /// Test both singleton and thread static lifecycles in separate threads.
+        /// Only singleton bindings are static between threads.
+        /// Thread static bindings will be static within the same thread.
+        /// </summary>
         [Fact]
-        public void Deep_Thread_Static_Lifecycle_Objects_Combination_Of_Lifecycles_Same_Thread()
+        public void Test_Combination_Lifecycles_In_Same_Threads()
         {
             Component6 comp1 = null;
             Component6 comp2 = null;
